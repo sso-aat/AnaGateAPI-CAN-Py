@@ -1,0 +1,989 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>analib package &#8212; analib 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">analib 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="analib-package">
+<h1>analib package<a class="headerlink" href="#analib-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-analib.channel">
+<span id="analib-channel-module"></span><h2>analib.channel module<a class="headerlink" href="#module-analib.channel" title="Permalink to this headline">¶</a></h2>
+<p>Created on Mon Jul 23 20:56:57 2018</p>
+<p>&#64;author: Sebastian Scholz</p>
+<dl class="class">
+<dt id="analib.channel.Channel">
+<em class="property">class </em><code class="descclassname">analib.channel.</code><code class="descname">Channel</code><span class="sig-paren">(</span><em>ipAddress='192.168.1.254'</em>, <em>port=0</em>, <em>confirm=True</em>, <em>ind=True</em>, <em>timeout=10000</em>, <em>baudrate=125000</em>, <em>operatingMode=0</em>, <em>termination=True</em>, <em>highSpeedMode=False</em>, <em>timeStampOn=False</em>, <em>maxSizePerQueue=1000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="method">
+<dt id="analib.channel.Channel.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>ipAddress='192.168.1.254'</em>, <em>port=0</em>, <em>confirm=True</em>, <em>ind=True</em>, <em>timeout=10000</em>, <em>baudrate=125000</em>, <em>operatingMode=0</em>, <em>termination=True</em>, <em>highSpeedMode=False</em>, <em>timeStampOn=False</em>, <em>maxSizePerQueue=1000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open a connection to an Anagate CAN channel.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ipAddress</strong> (<em>str</em><em>, </em><em>optional</em>) – Network address of the AnaGate partner.
+Defaults to ‘192.168.1.254’ which is the factory default.</li>
+<li><strong>port</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>CAN port number.
+Allowed values are:</p>
+<blockquote>
+<div><ul>
+<li>0 for port 1/A (all AnaGate CAN models)</li>
+<li><dl class="first docutils">
+<dt>1 for port 2/B (AnaGate CAN duo, AnaGate CAN quattro,</dt>
+<dd>AnaGate CAN X2/X4/X8)</dd>
+</dl>
+</li>
+<li>2 for port 3/C (AnaGate CAN quattro, AnaGate CAN X4/X8)</li>
+<li>3 for port 4/D (AnaGate CAN quattro, AnaGate CAN X4/X8)</li>
+<li>4 for port 5/E (AnaGate CAN X8)</li>
+<li>5 for port 6/F (AnaGate CAN X8)</li>
+<li>6 for port 7/G (AnaGate CAN X8)</li>
+<li>7 for port 8/H (AnaGate CAN X8)</li>
+</ul>
+</div></blockquote>
+<p>Defaults to 0.</p>
+</li>
+<li><strong>confirm</strong> (<em>bool</em><em>, </em><em>optional</em>) – If set to True, all incoming and outgoing
+data requests are confirmed by the internal message protocol.
+Without confirmations a better transmission performance is
+reached. Defaults to True.</li>
+<li><strong>ind</strong> (<em>bool</em><em>, </em><em>optional</em>) – If set to False, all incoming telegrams are
+discarded. Defaults to True.</li>
+<li><strong>timeout</strong> (<em>int</em><em>, </em><em>optional</em>) – Default timeout for accessing the AnaGate
+in milliseconds.
+A timeout is reported if the AnaGate partner does not respond
+within the defined timeout period. This global timeout value is
+valid on the current network connection for all commands and
+functions which do not offer a specific timeout value.
+Defaults to 10 s.</li>
+<li><strong>baudrate</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>The baud rate to be used.
+The following values are supported:</p>
+<blockquote>
+<div><ul>
+<li>10000 für 10kBit</li>
+<li>20000 für 20kBit</li>
+<li>50000 für 50kBit</li>
+<li>62500 für 62.5kBit</li>
+<li>100000 für 100kBit</li>
+<li>125000 für 125kBit</li>
+<li>250000 für 250kBit</li>
+<li>500000 für 500kBit</li>
+<li>800000 für 800kBit (not AnaGate CAN)</li>
+<li>1000000 für 1MBit</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>operatingMode</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>The operating mode to be used.
+The following values are allowed:</p>
+<blockquote>
+<div><ul>
+<li>0 = default mode.</li>
+<li><dl class="first docutils">
+<dt>1 = loop back mode: No telegrams are sent via CAN bus.</dt>
+<dd>Instead they are received as if they had been
+transmitted over CAN by a different CAN device.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>2 = listen mode: Device operates as a passive bus</dt>
+<dd>partner, meaning no telegrams are sent to the CAN bus
+(nor ACKs for incoming telegrams).</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>3 = offline mode: No telegrams are sent or received on</dt>
+<dd>the CAN bus. Thus no error frames are generated on the
+bus if other connected CAN devices send telegrams with
+a different baud rate.</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>termination</strong> (<em>bool</em><em>, </em><em>optional</em>) – Use integrated CAN bus termination
+(True=yes, False=no). This setting is not supported by all
+AnaGate CAN models.</li>
+<li><strong>highSpeedMode</strong> (<em>bool</em><em>, </em><em>optional</em>) – Use high speed mode (True=yes,
+False=no). This setting is not supported by all AnaGate CAN
+models.
+The high speed mode was created for large baud rates with
+continuously high bus load. In this mode telegrams are not
+confirmed on the protocol layer and the software filters
+defined via CANSetFilter are ignored.</li>
+<li><strong>timeStampOn</strong> (<em>bool</em><em>, </em><em>optional</em>) – Use time stamp mode (True=yes,
+False=no). This setting is not supported by all AnaGate CAN
+models.
+In activated time stamp mode an additional timestamp is sent
+with the CAN telegram. This timestamp indicates when the
+incoming message was received by the CAN controller or when the
+outgoing message was confirmed by the CAN controller.</li>
+<li><strong>maxSizePerQueue</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum size of the receive
+buffer. Defaults to 42.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel._closeDevice">
+<code class="descname">_closeDevice</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel._closeDevice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel._closeDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes an open network connection to an AnaGate CAN device.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel._deviceConnectState">
+<code class="descname">_deviceConnectState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel._deviceConnectState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel._deviceConnectState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the current network connection state of the current
+AnaGate connection.</p>
+<p>This function can be used to check if an already connected device is
+disconnected.</p>
+<p>The detection period of a state change depends on the use of the
+internal AnaGateALIVE mechanism. This ALIVE mechanism has to be
+switched on explicitly via the startAlive function. Once activated
+the connection state is periodically checked by the ALIVE mechanism.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><dl class="docutils">
+<dt>The current network connection state. The following values are</dt>
+<dd><dl class="first last docutils">
+<dt>possible:</dt>
+<dd><ul class="first last simple">
+<li><dl class="first docutils">
+<dt>1 = DISCONNECTED: The connection to the AnaGate is</dt>
+<dd>disconnected.</dd>
+</dl>
+</li>
+<li>2 = CONNECTING: The connection is connecting.</li>
+<li>3 = CONNECTED : The connection is established.</li>
+<li>4 = DISCONNECTING: The connection is disonnecting.</li>
+<li><dl class="first docutils">
+<dt>5 = NOT_INITIALIZED: The network protocol is not</dt>
+<dd>successfully initialized.</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel._openDevice">
+<code class="descname">_openDevice</code><span class="sig-paren">(</span><em>ipAddress='192.168.1.254'</em>, <em>port=0</em>, <em>confirm=True</em>, <em>ind=True</em>, <em>timeout=10000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel._openDevice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel._openDevice" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens an network connection (TCP or UDP) to an AnaGate CAN device.</p>
+<p>Opens a TCP/IP connection to an CAN interface of an AnaGate CAN device.
+If the connection is established, CAN telegrams can be sent and
+received.</p>
+<p>The connection should be closed with the function _closeDevice if not
+longer needed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ipAddress</strong> (<em>str</em><em>, </em><em>optional</em>) – Network address of the AnaGate partner.
+Defaults to ‘192.168.1.254’ which is the factory default.</li>
+<li><strong>port</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>CAN port number.
+Allowed values are:</p>
+<blockquote>
+<div><ul>
+<li>0 for port 1/A (all AnaGate CAN models)</li>
+<li><dl class="first docutils">
+<dt>1 for port 2/B (AnaGate CAN duo, AnaGate CAN quattro,</dt>
+<dd>AnaGate CAN X2/X4/X8)</dd>
+</dl>
+</li>
+<li>2 for port 3/C (AnaGate CAN quattro, AnaGate CAN X4/X8)</li>
+<li>3 for port 4/D (AnaGate CAN quattro, AnaGate CAN X4/X8)</li>
+<li>4 for port 5/E (AnaGate CAN X8)</li>
+<li>5 for port 6/F (AnaGate CAN X8)</li>
+<li>6 for port 7/G (AnaGate CAN X8)</li>
+<li>7 for port 8/H (AnaGate CAN X8)</li>
+</ul>
+</div></blockquote>
+<p>Defaults to 0.</p>
+</li>
+<li><strong>confirm</strong> (<em>bool</em><em>, </em><em>optional</em>) – If set to True, all incoming and outgoing
+data requests are confirmed by the internal message protocol.
+Without confirmations a better transmission performance is
+reached. Defaults to True.</li>
+<li><strong>ind</strong> (<em>bool</em><em>, </em><em>optional</em>) – If set to False, all incoming telegrams are
+discarded. Defaults to True.</li>
+<li><strong>timeout</strong> (<em>int</em><em>, </em><em>optional</em>) – Default timeout for accessing the AnaGate
+in milliseconds.
+A timeout is reported if the AnaGate partner does not respond
+within the defined timeout period. This global timeout value is
+valid on the current network connection for all commands and
+functions which do not offer a specific timeout value.
+Defaults to 10 s.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel._setMaxSizePerQueue">
+<code class="descname">_setMaxSizePerQueue</code><span class="sig-paren">(</span><em>maxSize</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel._setMaxSizePerQueue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel._setMaxSizePerQueue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the maximum size of the queue that buffers received CAN
+telegrams.</p>
+<p>Sets the maximum size of the queue that buffers received CAN telegrams.
+No telegrams are buffered before this function is called. Once received
+telegrams have been added to the buffer they can be read with
+getMessage. If the queue is full while a new telegram is received
+then it gets discarded.</p>
+<p>If the queue size is set to 0 then all previously queued telegrams are
+deleted. However, if the queue size is reduced to a value different
+from 0 then excess telegrams are not discarded. Instead newly received
+telegrams don’t get queued until the queue has been freed enough via
+getMessage calls, or until the queue size has been increased again.</p>
+<dl class="docutils">
+<dt>Remarks:</dt>
+<dd>Received telegrams are only buffered if no callback function was
+registered via setCallback. Once a callback function has been
+enabled, previously buffered telegrams can still be read via
+getMessage. Newly received telegrams are not added to the queue
+though.</dd>
+</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>maxSize</strong> (<em>int</em>) – Maximum size of the receive buffer.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.baudrate">
+<code class="descname">baudrate</code><a class="headerlink" href="#analib.channel.Channel.baudrate" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – The baud rate to be used.</p>
+<dl class="docutils">
+<dt>The following values are supported:</dt>
+<dd><ul class="first last simple">
+<li>10000 für 10kBit</li>
+<li>20000 für 20kBit</li>
+<li>50000 für 50kBit</li>
+<li>62500 für 62.5kBit</li>
+<li>100000 für 100kBit</li>
+<li>125000 für 125kBit</li>
+<li>250000 für 250kBit</li>
+<li>500000 für 500kBit</li>
+<li>800000 für 800kBit (not AnaGate CAN)</li>
+<li>1000000 für 1MBit</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel.getGlobals">
+<code class="descname">getGlobals</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.getGlobals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.getGlobals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the currently used global settings on the CAN bus.</p>
+<p>Returns the global settings of the used CAN interface. These settings
+are effective for all concurrent connections to the CAN interface.</p>
+<p>Saves the received values in the corresponding private attributes.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel.getMessage">
+<code class="descname">getMessage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.getMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.getMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a received CAN telegram from the receive queue.</p>
+<p>Returns a received CAN telegram from the receive queue. The caller
+needs to supply memory buffers for the telegram parameters he is
+interested in. Parameters for unneeded values can be NULL pointers.</p>
+<p>The function returns the number of telegrams that are still in the
+queue after the function call via the pnAvailMsgs parameter. This
+variable is set to -1 if no telegram was available in the queue. In
+that case all telegram parameters are invalid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">11 bit CAN ID of the telegram
+bytes: Data bytes of the telegram
+int: Number of data bytes in the telegram
+int: Flags of the telegram</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">CanNoMsg</span></code> – If there no available CAN messages in the buffer</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel.getTime">
+<code class="descname">getTime</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.getTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.getTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the current system time from the AnaGate CAN device.</p>
+<p>If the time stamp mode is switched on by the CANSetGlobals function,
+the AnaGate hardware adds a time stamp to each incoming CAN telegram
+and a time stamp to the confirmation of a telegram sent via the API
+(only if confirmations are switched on for data requests).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Time in seconds from 01.01.1970.
+int: Micro seconds.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.handle">
+<code class="descname">handle</code><a class="headerlink" href="#analib.channel.Channel.handle" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – Access handle</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.highSpeedMode">
+<code class="descname">highSpeedMode</code><a class="headerlink" href="#analib.channel.Channel.highSpeedMode" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – Use high speed mode (True=yes, False=no).</p>
+<p>This setting is not supported by all AnaGate CAN models.</p>
+<p>The high speed mode was created for large baud rates with continuously
+high bus load. In this mode telegrams are not confirmed on the protocol
+layer and the software filters defined via CANSetFilter are ignored.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.ipAddress">
+<code class="descname">ipAddress</code><a class="headerlink" href="#analib.channel.Channel.ipAddress" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – Network address of the AnaGate partner.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.maxSizePerQueue">
+<code class="descname">maxSizePerQueue</code><a class="headerlink" href="#analib.channel.Channel.maxSizePerQueue" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – Maximum size of the receive buffer.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.operatingMode">
+<code class="descname">operatingMode</code><a class="headerlink" href="#analib.channel.Channel.operatingMode" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – The operating mode to be used.</p>
+<dl class="docutils">
+<dt>The following values are allowed:</dt>
+<dd><ul class="first last simple">
+<li>0 = default mode.</li>
+<li><dl class="first docutils">
+<dt>1 = loop back mode: No telegrams are sent via CAN bus.</dt>
+<dd>Instead they are received as if they had been
+transmitted over CAN by a different CAN device.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>2 = listen mode: Device operates as a passive bus</dt>
+<dd>partner, meaning no telegrams are sent to the CAN bus
+(nor ACKs for incoming telegrams).</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>3 = offline mode: No telegrams are sent or received on</dt>
+<dd>the CAN bus. Thus no error frames are generated on the
+bus if other connected CAN devices send telegrams with
+a different baud rate.</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.port">
+<code class="descname">port</code><a class="headerlink" href="#analib.channel.Channel.port" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – CAN port number</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.sendDataConfirm">
+<code class="descname">sendDataConfirm</code><a class="headerlink" href="#analib.channel.Channel.sendDataConfirm" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – If True, all incoming and outgoing data requests are confirmed
+by the internal message protocol. Without confirmations a better
+transmission performance is reached.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.sendDataInd">
+<code class="descname">sendDataInd</code><a class="headerlink" href="#analib.channel.Channel.sendDataInd" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – If set to False, all incoming telegrams are discarded.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel.setCallback">
+<code class="descname">setCallback</code><span class="sig-paren">(</span><em>callbackFunction</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.setCallback"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.setCallback" title="Permalink to this definition">¶</a></dt>
+<dd><p>Defines an asynchronous callback function which is called for each
+incoming CAN telegram.</p>
+<p>Incoming CAN telegrams can bei received via a callback function which
+can be set by a simple API call. If a callback function is set it will
+be called by the API asynchronously.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>callbackFunction</strong> – Function pointer to the private callback
+function. Set this parameter to NULL to deactivate the callback
+function. The parameters of the callback function are described
+in the documentation of the CANWrite function.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel.setGlobals">
+<code class="descname">setGlobals</code><span class="sig-paren">(</span><em>baudrate=None</em>, <em>operatingMode=None</em>, <em>termination=None</em>, <em>highSpeedMode=None</em>, <em>timeStampOn=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.setGlobals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.setGlobals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the global settings which are to be used on the CAN bus.</p>
+<p>Sets the global settings of the used CAN interface. These settings are
+effective for all concurrent connections to the CAN interface. The
+settings are not saved permanently on the device and are reset after
+every device restart.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>baudrate</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>The baud rate to be used.
+The following values are supported:</p>
+<blockquote>
+<div><ul>
+<li>10000 für 10kBit</li>
+<li>20000 für 20kBit</li>
+<li>50000 für 50kBit</li>
+<li>62500 für 62.5kBit</li>
+<li>100000 für 100kBit</li>
+<li>125000 für 125kBit</li>
+<li>250000 für 250kBit</li>
+<li>500000 für 500kBit</li>
+<li>800000 für 800kBit (not AnaGate CAN)</li>
+<li>1000000 für 1MBit</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>operatingMode</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>The operating mode to be used.
+The following values are allowed:</p>
+<blockquote>
+<div><ul>
+<li>0 = default mode.</li>
+<li><dl class="first docutils">
+<dt>1 = loop back mode: No telegrams are sent via CAN bus.</dt>
+<dd>Instead they are received as if they had been
+transmitted over CAN by a different CAN device.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>2 = listen mode: Device operates as a passive bus</dt>
+<dd>partner, meaning no telegrams are sent to the CAN bus
+(nor ACKs for incoming telegrams).</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>3 = offline mode: No telegrams are sent or received on</dt>
+<dd>the CAN bus. Thus no error frames are generated on the
+bus if other connected CAN devices send telegrams with
+a different baud rate.</dd>
+</dl>
+</li>
+</ul>
+</div></blockquote>
+</li>
+<li><strong>termination</strong> (<em>bool</em><em>, </em><em>optional</em>) – Use integrated CAN bus termination
+(True=yes, False=no). This setting is not supported by all
+AnaGate CAN models.</li>
+<li><strong>highSpeedMode</strong> (<em>bool</em><em>, </em><em>optional</em>) – Use high speed mode (True=yes,
+False=no). This setting is not supported by all AnaGate CAN
+models.
+The high speed mode was created for large baud rates with
+continuously high bus load. In this mode telegrams are not
+confirmed on the protocol layer and the software filters
+defined via CANSetFilter are ignored.</li>
+<li><strong>timeStampOn</strong> (<em>bool</em><em>, </em><em>optional</em>) – Use time stamp mode (True=yes,
+False=no). This setting is not supported by all AnaGate CAN
+models.
+In activated time stamp mode an additional timestamp is sent
+with the CAN telegram. This timestamp indicates when the
+incoming message was received by the CAN controller or when the
+outgoing message was confirmed by the CAN controller.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel.setTime">
+<code class="descname">setTime</code><span class="sig-paren">(</span><em>seconds=None</em>, <em>microseconds=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.setTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.setTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets the current system time on the AnaGate device.</p>
+<p>The CANSetTime function sets the system time on the AnaGate hardware.
+If the time stamp mode is switched on by the setGlobals function, the
+AnaGate hardware adds a time stamp to each incoming CAN telegram and a
+time stamp to the confirmation of a telegram sent via the API (only if
+confirmations are switched on for data requests).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>seconds</strong> (<em>float</em>) – Time in seconds from 01.01.1970. Defaults to None.
+In that case the current system time is used.</li>
+<li><strong>microseconds</strong> (<em>int</em><em>, </em><em>optional</em>) – Micro seconds. Defaults to 0.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel.startAlive">
+<code class="descname">startAlive</code><span class="sig-paren">(</span><em>aliveTime=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.startAlive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.startAlive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Starts the ALIVE mechanism, which checks periodically the state of
+the network connection to the AnaGate hardware.</p>
+<p>The AnaGate communication protocol (see [TCP-2010]) supports an
+application specific connection control which allows faster detection
+of broken connection lines.</p>
+<p>The CANStartAlive function starts a concurrent thread in the DLL in
+order to send defined alive telegrams (ALIVE_REQ) peridically (approx.
+every half of the given time out) to the Anagate device via the current
+network connection. If the alive telegram is not confirmed within the
+alive time the connection is marked as disconnected and the socket is
+closed if not already closed.</p>
+<p>Use the _deviceConnectState function to check the current network
+connection state.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>aliveTime</strong> (<em>int</em>) – Time out interval in seconds for the ALIVE
+mechanism. Defaults to 1 s.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.state">
+<code class="descname">state</code><a class="headerlink" href="#analib.channel.Channel.state" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – Parses the integer connection state to a meaningful string.</p>
+<dl class="docutils">
+<dt>Possible values are:</dt>
+<dd><ul class="first last simple">
+<li>‘DISCONNECTED’</li>
+<li>‘CONNECTING’</li>
+<li>‘CONNECTED’,</li>
+<li>‘DISCONNECTING’</li>
+<li>‘NOT_INITIALIZED’</li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.termination">
+<code class="descname">termination</code><a class="headerlink" href="#analib.channel.Channel.termination" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – Use high speed mode (True=yes, False=no).</p>
+<p>This setting is not supported by all AnaGate CAN models.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.channel.Channel.timeStampOn">
+<code class="descname">timeStampOn</code><a class="headerlink" href="#analib.channel.Channel.timeStampOn" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – Use time stamp mode (True=yes, False=no).</p>
+<p>This setting is not supported by all AnaGate CAN models.</p>
+<p>In activated time stamp mode an additional timestamp is sent with the
+CAN telegram. This timestamp indicates when the incoming message was
+received by the CAN controller or when the outgoing message was
+confirmed by the CAN controller.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.channel.Channel.write">
+<code class="descname">write</code><span class="sig-paren">(</span><em>identifier</em>, <em>data</em>, <em>flags=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#Channel.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.Channel.write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends a CAN telegram to the CAN bus via the AnaGate device.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>identifier</strong> (<em>int</em>) – CAN identifier of the sender. Parameter flags
+defines whether the address is in extended format (29-bit) or
+standard format (11-bit).</li>
+<li><strong>data</strong> (<em>list</em><em>(</em><em>int</em><em>)</em>) – Data content given as a list of integers. Data
+length is computed from this list.</li>
+<li><strong>flags</strong> (<em>int</em><em>, </em><em>optional</em>) – <p>The format flags are defined as follows:
+* Bit 0: If set, the CAN identifier is in extended format</p>
+<blockquote>
+<div>(29 bit), otherwise not (11 bit).</div></blockquote>
+<ul>
+<li>Bit 1: If set, the telegram is marked as remote frame.</li>
+<li><dl class="first docutils">
+<dt>Bit 2: If set, the telegram has a valid timestamp. This</dt>
+<dd>bit is only set for incoming data telegrams and doesn’t
+need to be set for the CANWrite and CANWriteEx
+functions.</dd>
+</dl>
+</li>
+</ul>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="analib.channel.check_type">
+<code class="descclassname">analib.channel.</code><code class="descname">check_type</code><span class="sig-paren">(</span><em>value</em>, <em>name</em>, <em>valtype=&lt;class 'int'&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/channel.html#check_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.channel.check_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-analib.constants">
+<span id="analib-constants-module"></span><h2>analib.constants module<a class="headerlink" href="#module-analib.constants" title="Permalink to this headline">¶</a></h2>
+<p>Created on Tue Jul 24 15:16:53 2018</p>
+<p>&#64;author: Sebastian</p>
+</div>
+<div class="section" id="module-analib.dll">
+<span id="analib-dll-module"></span><h2>analib.dll module<a class="headerlink" href="#module-analib.dll" title="Permalink to this headline">¶</a></h2>
+<p>Created on Mon Jul 23 12:16:51 2018</p>
+<p>&#64;author: Sebastian Scholz</p>
+<dl class="class">
+<dt id="analib.dll.libCANDLL">
+<em class="property">class </em><code class="descclassname">analib.dll.</code><code class="descname">libCANDLL</code><span class="sig-paren">(</span><em>ct_dll</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/dll.html#libCANDLL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.dll.libCANDLL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#analib.dllLoader.MyDll" title="analib.dllLoader.MyDll"><code class="xref py py-class docutils literal notranslate"><span class="pre">analib.dllLoader.MyDll</span></code></a></p>
+<dl class="attribute">
+<dt id="analib.dll.libCANDLL.CBFUNC">
+<code class="descname">CBFUNC</code><a class="headerlink" href="#analib.dll.libCANDLL.CBFUNC" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ctypes.CFUNCTYPE.&lt;locals&gt;.CFunctionType</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.dll.libCANDLL.CBFUNCEX">
+<code class="descname">CBFUNCEX</code><a class="headerlink" href="#analib.dll.libCANDLL.CBFUNCEX" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">ctypes.CFUNCTYPE.&lt;locals&gt;.CFunctionType</span></code></p>
+</dd></dl>
+
+<dl class="method">
+<dt id="analib.dll.libCANDLL._error_check">
+<code class="descname">_error_check</code><span class="sig-paren">(</span><em>result</em>, <em>func</em>, <em>arguments</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/dll.html#libCANDLL._error_check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.dll.libCANDLL._error_check" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error function used in ctype calls for canlib DLL.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="analib.dll.libCANDLL.function_prototypes">
+<code class="descname">function_prototypes</code><em class="property"> = {'CANCloseDevice': [[&lt;class 'ctypes.c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANDeviceConnectState': [[&lt;class 'ctypes.c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANErrorMessage': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_char_p'&gt;, &lt;class 'ctypes.c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANGetFilter': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANGetGlobals': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;, &lt;class 'analib.dll.LP_c_ubyte'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANGetMessage': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;, &lt;class 'ctypes.wintypes.LP_c_long'&gt;, &lt;class 'ctypes.c_char_p'&gt;, &lt;class 'analib.dll.LP_c_ubyte'&gt;, &lt;class 'ctypes.wintypes.LP_c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANGetTime': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANOpenDevice': [[&lt;class 'ctypes.wintypes.LP_c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_char_p'&gt;, &lt;class 'ctypes.c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANOpenDeviceEx': [[&lt;class 'ctypes.wintypes.LP_c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_char_p'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANReadAnalog': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;, &lt;class 'ctypes.wintypes.LP_c_ushort'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANReadDigital': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANRestart': [[&lt;class 'ctypes.c_char_p'&gt;, &lt;class 'ctypes.c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANSetCallback': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.CFUNCTYPE.&lt;locals&gt;.CFunctionType'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANSetCallbackEx': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.CFUNCTYPE.&lt;locals&gt;.CFunctionType'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANSetFilter': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_ulong'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANSetGlobals': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_ulong'&gt;, &lt;class 'ctypes.c_ubyte'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANSetMaxSizePerQueue': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_ulong'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANSetTime': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_ulong'&gt;, &lt;class 'ctypes.c_ulong'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANWrite': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_char_p'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANWriteAnalog': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'analib.dll.c_ulong_Array_4'&gt;, &lt;class 'ctypes.c_ushort'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANWriteDigital': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_ulong'&gt;], &lt;class 'ctypes.c_long'&gt;], 'CANWriteEx': [[&lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_char_p'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_long'&gt;, &lt;class 'ctypes.wintypes.LP_c_long'&gt;], &lt;class 'ctypes.c_long'&gt;], 'DLLInfo': [[&lt;class 'ctypes.c_char_p'&gt;, &lt;class 'ctypes.c_long'&gt;], &lt;class 'ctypes.c_long'&gt;]}</em><a class="headerlink" href="#analib.dll.libCANDLL.function_prototypes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-analib.dllLoader">
+<span id="analib-dllloader-module"></span><h2>analib.dllLoader module<a class="headerlink" href="#module-analib.dllLoader" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="analib.dllLoader.MyDll">
+<em class="property">class </em><code class="descclassname">analib.dllLoader.</code><code class="descname">MyDll</code><span class="sig-paren">(</span><em>ct_dll</em>, <em>**function_prototypes</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/dllLoader.html#MyDll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.dllLoader.MyDll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wrapper around a ctypes dll, <cite>MyDll</cite> only allows annotated functions to be called</p>
+<p>The first argument to the <cite>__init__</cite> function, <cite>ct_dll</cite>, is the ctypes dll
+that this object should wrap. It also takes an arbitrary number of keyword
+arguments as “function prototypes”. The keyword should match a function in
+the ctypes dll, and the value should be an annotation in the form of
+<code class="docutils literal notranslate"><span class="pre">[argtypes,</span> <span class="pre">restype,</span> <span class="pre">errcheck]</span></code>. These values are passed on to
+<cite>dllLoader.annotate</cite>. Note that <cite>restype</cite> and <cite>errcheck</cite> are optional if
+<cite>default_restype</cite> and <cite>default_errcheck</cite> attributes are defined in a
+subclass (respectively).</p>
+<p>After the <cite>MyDll</cite> object has been created, all functions annotated by
+function prototypes are available as attributes, while all other functions
+are not. This effectively forces a function to have been annotated (which
+all functions should be to avoid ctypes defaults) before being used, or an
+<cite>AttributeError</cite> is raised.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="analib.dllLoader._extract_value_from_pointer">
+<code class="descclassname">analib.dllLoader.</code><code class="descname">_extract_value_from_pointer</code><span class="sig-paren">(</span><em>pointer</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/dllLoader.html#_extract_value_from_pointer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.dllLoader._extract_value_from_pointer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extract the value from any ctypes pointer object</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="analib.dllLoader.annotate">
+<code class="descclassname">analib.dllLoader.</code><code class="descname">annotate</code><span class="sig-paren">(</span><em>dll_object</em>, <em>function_name</em>, <em>argtypes</em>, <em>restype=&lt;object object&gt;</em>, <em>errcheck=&lt;object object&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/dllLoader.html#annotate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.dllLoader.annotate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fully annotate a dll function using ctypes</p>
+<p>To “annotate” a function is to set its <cite>argtypes</cite>, <cite>restype</cite>, and
+<cite>errcheck</cite> attributes, which should always be done for all used functions.</p>
+<p>This function is used internally by <cite>MyDll</cite>, which only allows access to
+annotated dll functions.</p>
+<p>If <cite>restype</cite> and/or <cite>errcheck</cite> arguments are not specified, the
+<cite>dll_object</cite> argument must have a <cite>default_restype</cite> and/or
+<cite>default_errcheck</cite>, respectively. These values will then be used when
+setting the function’s <cite>argtypes</cite> and <cite>restype</cite> attributes.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="analib.dllLoader.errcheck_by_argp">
+<code class="descclassname">analib.dllLoader.</code><code class="descname">errcheck_by_argp</code><span class="sig-paren">(</span><em>status_pos</em>, <em>errortype</em>, <em>ok=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/dllLoader.html#errcheck_by_argp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.dllLoader.errcheck_by_argp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Meta function for generating an error check function</p>
+<p>Returns a newly defined error check function for use with ctypes. This
+error function will inspect the c-function’s argument number <cite>status_pos</cite>,
+to find the “status” returned by the operation.</p>
+<p>If this status is equal to <cite>ok</cite> (default 0), the error check function
+signals to ctypes that the call succeeded. Otherwise, the status is passed
+to <cite>errortype</cite> which must return an exception object, which will then be
+raised.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="analib.dllLoader.get_dll_function">
+<code class="descclassname">analib.dllLoader.</code><code class="descname">get_dll_function</code><span class="sig-paren">(</span><em>dll</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/dllLoader.html#get_dll_function"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.dllLoader.get_dll_function" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="analib.dllLoader.load_dll">
+<code class="descclassname">analib.dllLoader.</code><code class="descname">load_dll</code><span class="sig-paren">(</span><em>win_name=None</em>, <em>linux_name=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/dllLoader.html#load_dll"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.dllLoader.load_dll" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load dll or shared object file as appropriate.</p>
+<dl class="docutils">
+<dt>On Windows:</dt>
+<dd>If environment variable ‘KVDLLPATH’ is set, will try and load DLL named
+win_name from that directory. Otherwise checks registry for CANlib SDK
+installation directory.</dd>
+<dt>On Linux:</dt>
+<dd>If environment variable ‘KVDLLPATH’ is set, will try and load shared
+object library named linux_name from that directory. Otherwise let
+the OS try and find a matching shared library object.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="analib.dllLoader.no_errcheck">
+<code class="descclassname">analib.dllLoader.</code><code class="descname">no_errcheck</code><span class="sig-paren">(</span><em>ret</em>, <em>func</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/dllLoader.html#no_errcheck"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.dllLoader.no_errcheck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dummy error check function that does not do any error checking</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-analib.exception">
+<span id="analib-exception-module"></span><h2>analib.exception module<a class="headerlink" href="#module-analib.exception" title="Permalink to this headline">¶</a></h2>
+<p>Created on Mon Jul 23 21:27:10 2018</p>
+<p>&#64;author: Sebastian Scholz</p>
+<dl class="exception">
+<dt id="analib.exception.CanNoMsg">
+<em class="property">exception </em><code class="descclassname">analib.exception.</code><code class="descname">CanNoMsg</code><a class="reference internal" href="_modules/analib/exception.html#CanNoMsg"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.exception.CanNoMsg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+<dl class="exception">
+<dt id="analib.exception.dllException">
+<em class="property">exception </em><code class="descclassname">analib.exception.</code><code class="descname">dllException</code><a class="reference internal" href="_modules/analib/exception.html#dllException"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.exception.dllException" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</div>
+<div class="section" id="analib-futureapi-module">
+<h2>analib.futureapi module<a class="headerlink" href="#analib-futureapi-module" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-analib.wrapper">
+<span id="analib-wrapper-module"></span><h2>analib.wrapper module<a class="headerlink" href="#module-analib.wrapper" title="Permalink to this headline">¶</a></h2>
+<p>Created on Mon Jul 23 11:45:30 2018</p>
+<p>&#64;author: Sebastian Scholz</p>
+<dl class="function">
+<dt id="analib.wrapper.dllInfo">
+<code class="descclassname">analib.wrapper.</code><code class="descname">dllInfo</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/wrapper.html#dllInfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.wrapper.dllInfo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the current version information of the AnaGate DLL.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Version reference number of the AnaGate DLL.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="analib.wrapper.errorCheck">
+<code class="descclassname">analib.wrapper.</code><code class="descname">errorCheck</code><span class="sig-paren">(</span><em>returnCode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/wrapper.html#errorCheck"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.wrapper.errorCheck" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="analib.wrapper.errorMessage">
+<code class="descclassname">analib.wrapper.</code><code class="descname">errorMessage</code><span class="sig-paren">(</span><em>returnCode</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/wrapper.html#errorMessage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.wrapper.errorMessage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a description of the given error code as a text string.</p>
+<p>Returns a textual description of the parsed error code (see Anagate API 2.0
+Manualm Appendix A, API return codes). If the destination buffer is not
+large enough to store the text, the text is shortened to the specified
+buffer size.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>int</strong> – Error code for which the error description is to be determined.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Error description.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="analib.wrapper.loadDLL">
+<code class="descclassname">analib.wrapper.</code><code class="descname">loadDLL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/wrapper.html#loadDLL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.wrapper.loadDLL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="analib.wrapper.restart">
+<code class="descclassname">analib.wrapper.</code><code class="descname">restart</code><span class="sig-paren">(</span><em>ipAddress='192.168.1.254'</em>, <em>timeout=10000</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/analib/wrapper.html#restart"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#analib.wrapper.restart" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restarts an AnaGate CAN device.</p>
+<p>Restarts the AnaGate CAN device at the specified network address. It
+implicitly disconnects all open network connections to all existing CAN
+interfaces. The Restart command is even possible if the maximum number of
+allowed connections is reached.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ipAddress</strong> (<em>str</em><em>, </em><em>optional</em>) – Network address of the AnaGate partner.
+Defaults to ‘192.168.1.254’ which is the factory default.</li>
+<li><strong>timeout</strong> (<em>int</em><em>, </em><em>optional</em>) – Default timeout for accessing the AnaGate in
+milliseconds. A timeout is reported if the AnaGate partner does not
+respond within the defined timeout period. Defaults to 10 s.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-analib">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-analib" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">analib package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-analib.channel">analib.channel module</a></li>
+<li><a class="reference internal" href="#module-analib.constants">analib.constants module</a></li>
+<li><a class="reference internal" href="#module-analib.dll">analib.dll module</a></li>
+<li><a class="reference internal" href="#module-analib.dllLoader">analib.dllLoader module</a></li>
+<li><a class="reference internal" href="#module-analib.exception">analib.exception module</a></li>
+<li><a class="reference internal" href="#analib-futureapi-module">analib.futureapi module</a></li>
+<li><a class="reference internal" href="#module-analib.wrapper">analib.wrapper module</a></li>
+<li><a class="reference internal" href="#module-analib">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/analib.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">analib 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Sebastian Scholz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>

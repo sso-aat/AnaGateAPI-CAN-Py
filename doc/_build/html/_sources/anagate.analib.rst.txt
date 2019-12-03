@@ -1,0 +1,70 @@
+anagate.analib package
+======================
+
+Submodules
+----------
+
+anagate.analib.channel module
+-----------------------------
+
+.. automodule:: anagate.analib.channel
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anagate.analib.constants module
+-------------------------------
+
+.. automodule:: anagate.analib.constants
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anagate.analib.dll module
+-------------------------
+
+.. automodule:: anagate.analib.dll
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anagate.analib.dllLoader module
+-------------------------------
+
+.. automodule:: anagate.analib.dllLoader
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anagate.analib.exception module
+-------------------------------
+
+.. automodule:: anagate.analib.exception
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anagate.analib.futureapi module
+-------------------------------
+
+.. automodule:: anagate.analib.futureapi
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anagate.analib.wrapper module
+-----------------------------
+
+.. automodule:: anagate.analib.wrapper
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: anagate.analib
+    :members:
+    :undoc-members:
+    :show-inheritance:

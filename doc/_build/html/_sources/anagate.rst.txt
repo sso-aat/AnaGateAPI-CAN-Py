@@ -1,0 +1,37 @@
+anagate package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+
+    anagate.analib
+
+Submodules
+----------
+
+anagate.setup module
+--------------------
+
+.. automodule:: anagate.setup
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+anagate.test module
+-------------------
+
+.. automodule:: anagate.test
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: anagate
+    :members:
+    :undoc-members:
+    :show-inheritance:

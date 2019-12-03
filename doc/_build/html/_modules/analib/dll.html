@@ -1,0 +1,160 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>analib.dll &#8212; analib 0.1.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">analib 0.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for analib.dll</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Mon Jul 23 12:16:51 2018</span>
+
+<span class="sd">@author: Sebastian Scholz</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">ctypes</span> <span class="k">as</span> <span class="nn">ct</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">dllLoader</span>
+
+
+<div class="viewcode-block" id="libCANDLL"><a class="viewcode-back" href="../../analib.html#analib.dll.libCANDLL">[docs]</a><span class="k">class</span> <span class="nc">libCANDLL</span><span class="p">(</span><span class="n">dllLoader</span><span class="o">.</span><span class="n">MyDll</span><span class="p">):</span>
+
+    <span class="n">CBFUNC</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">CFUNCTYPE</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span>
+                          <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">)</span>
+    <span class="n">CBFUNCEX</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">CFUNCTYPE</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_void_p</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span>
+                          <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">)</span>
+
+    <span class="n">function_prototypes</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;DLLInfo&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANOpenDevice&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">),</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+                          <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANOpenDeviceEx&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">),</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANCloseDevice&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANSetGlobals&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_uint8</span><span class="p">,</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANGetGlobals&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">),</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint8</span><span class="p">),</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">),</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">),</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">)],</span>
+                          <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANSetFilter&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">)],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANGetFilter&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">)],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANSetTime&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANGetTime&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">),</span>
+                        <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">),</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">)],</span>
+                       <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANWrite&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span>
+                      <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANWriteEx&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span>
+                      <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">),</span>
+                      <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">)],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANSetCallback&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">CBFUNC</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANSetCallbackEx&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">CBFUNCEX</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANSetMaxSizePerQueue&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANGetMessage&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">),</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">),</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint8</span><span class="p">),</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">),</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">),</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">)],</span>
+                          <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANReadDigital&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">),</span>
+                            <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">)],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANWriteDigital&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="c1"># TODO: Include array</span>
+        <span class="s1">&#39;CANReadAnalog&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">),</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span><span class="p">),</span> <span class="n">ct</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ct</span><span class="o">.</span><span class="n">c_uint16</span><span class="p">)],</span>
+                          <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANWriteAnalog&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_uint32</span> <span class="o">*</span> <span class="mi">4</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_uint16</span><span class="p">],</span>
+                           <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANRestart&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANDeviceConnectState&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span>
+        <span class="s1">&#39;CANErrorMessage&#39;</span><span class="p">:</span> <span class="p">[[</span><span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_char_p</span><span class="p">,</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">],</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int32</span><span class="p">]</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ct_dll</span><span class="p">):</span>
+        <span class="c1"># set default values for function_prototypes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_restype</span> <span class="o">=</span> <span class="n">ct</span><span class="o">.</span><span class="n">c_int</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">default_errcheck</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_error_check</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">libCANDLL</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">ct_dll</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">function_prototypes</span><span class="p">)</span>
+
+<div class="viewcode-block" id="libCANDLL._error_check"><a class="viewcode-back" href="../../analib.html#analib.dll.libCANDLL._error_check">[docs]</a>    <span class="k">def</span> <span class="nf">_error_check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">arguments</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Error function used in ctype calls for canlib DLL.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">result</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># raise can_error(result)</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">analib 0.1.0 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Sebastian Scholz.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.5.
+    </div>
+  </body>
+</html>
