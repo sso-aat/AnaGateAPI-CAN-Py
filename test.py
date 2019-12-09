@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Jul 23 14:29:35 2018
-
 @author: Sebastian
 """
 import analib
@@ -19,8 +18,19 @@ if __name__=='__main__':
         print(f'State: {ch.state}')
 
         print('Writing example CAN message ...')
-        ch.write(0x42, [1, 2, 3, 4, 5, 6, 7])
-
+        #ch.write(0x42, [1, 2, 3, 4, 5, 6, 7])
+        
+        # Define parameters
+        NodeId = 8
+        SDO_RX = 0x600
+        index = 0x2200
+        Byte0= cmd = 0x40 
+        Byte1, Byte2 = index.to_bytes(2, 'little')
+        Byte3 = subindex = 1 
+        ch.write(SDO_RX + NodeId, [Byte0,Byte1,Byte2,Byte3,0,0,0,0])
+        print('Reading messages ...')        
+        
+        
         s, m = ch.getTime()
         print(f'Time: {time.ctime(s + m / 1000000)}')
         print('Setting Time ...')

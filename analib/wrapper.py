@@ -37,7 +37,6 @@ def loadDLL():
     else:
         return ct.CDLL(lib_path)
 
-
 dll = libCANDLL(loadDLL())
 
 
@@ -49,7 +48,6 @@ def dllInfo():
     """
     buf = ct.create_string_buffer(128)
     nMessageLen = ct.c_int32(128)
-
     ret = dll.DLLInfo(buf, nMessageLen)
     return buf.value.decode()
 

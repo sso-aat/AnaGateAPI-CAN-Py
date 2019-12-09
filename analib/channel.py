@@ -602,8 +602,7 @@ class Channel(object):
         errorCheck(ret)
 
     def getMessage(self):
-        """Returns a received CAN telegram from the receive queue.
-
+        """
         Returns a received CAN telegram from the receive queue. The caller
         needs to supply memory buffers for the telegram parameters he is
         interested in. Parameters for unneeded values can be NULL pointers.
@@ -708,3 +707,5 @@ class Channel(object):
         """
         ret = dll.CANSetCallback(self.__handle, callbackFunction)
         errorCheck(ret)
+
+      

@@ -11,13 +11,12 @@ from . import dllLoader
 
 
 class libCANDLL(dllLoader.MyDll):
-
+    
     CBFUNC = ct.CFUNCTYPE(ct.c_void_p, ct.c_int32, ct.POINTER(ct.c_char),
                           ct.c_int32, ct.c_int32, ct.c_int32)
     CBFUNCEX = ct.CFUNCTYPE(ct.c_void_p, ct.c_int32, ct.POINTER(ct.c_char),
                             ct.c_int32, ct.c_int32, ct.c_int32, ct.c_int32,
                             ct.c_int32)
-
     function_prototypes = {
         'DLLInfo': [[ct.c_char_p, ct.c_int32], ct.c_int32],
         'CANOpenDevice': [[ct.POINTER(ct.c_int32), ct.c_int32,
