@@ -1,6 +1,8 @@
 eclipse.preferences.version=1
 encoding//analib/channel.py=utf-8
+encoding//analib/constants.py=utf-8
 encoding//analib/dll.py=utf-8
+encoding//analib/exception.py=utf-8
 encoding//analib/wrapper.py=utf-8
 encoding/test.py=utf-8
 encoding/test_SDO.py=utf-8
