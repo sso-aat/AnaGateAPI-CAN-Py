@@ -14,7 +14,7 @@ if __name__=='__main__':
     ret = analib.wrapper.dllInfo()
     print(f'DLL version: "{ret}"')
 
-    with analib.channel.Channel() as ch:
+    with analib.channel.Channel(ipAddress='10.88.16.71', timeout=2000) as ch:
         print(f'State: {ch.state}')
 
         print('Writing example CAN message ...')
@@ -27,7 +27,7 @@ if __name__=='__main__':
         Byte0= cmd = 0x40 
         Byte1, Byte2 = index.to_bytes(2, 'little')
         Byte3 = subindex = 1 
-        ch.write(SDO_RX + NodeId, [Byte0,Byte1,Byte2,Byte3,0,0,0,0])
+        #ch.write(SDO_RX + NodeId, [Byte0,Byte1,Byte2,Byte3,0,0,0,0])
         print('Reading messages ...')        
         
         
@@ -47,4 +47,5 @@ if __name__=='__main__':
                 cobid, data, dlc, flag, t = ch.getMessage()
                 print(f'ID: {cobid:03X}; Data: {data.hex()}, DLC: {dlc}')
             except analib.CanNoMsg:
+                time.sleep(0.1)
                 pass
