@@ -6,12 +6,13 @@ Created on Sep 23 14:29:35 2019
 import analib
 import time
 from collections import deque, Counter
-from threading import Thread, Event, Lock
-from canlib import canlib, Frame
+from threading import Lock
 import ctypes as ct
 
+canMSG_ERROR_FRAME = 0x20
+
 class sdoReadCAN(object):
-    def __init__(self,ipAddress='192.168.1.254',channel=0,bitrate=125000):
+    def __init__(self,ipAddress='10.88.16.71',channel=0,bitrate=125000):
         print("Intializing reading class")
         self.__cnt = Counter()
 
@@ -95,7 +96,7 @@ class sdoReadCAN(object):
         msg[0] = 0x40
         try:
             self.__ch.write(cobid, msg)
-        except CanGeneralError:
+        except:
             self.cnt['SDO read request timeout'] += 1
             return None
         
@@ -193,7 +194,7 @@ class sdoReadCAN(object):
             :const:`canMSGERR_xxx` values
         """
     
-        if (flag & canlib.canMSG_ERROR_FRAME != 0):
+        if (flag & canMSG_ERROR_FRAME != 0):
             print("***ERROR FRAME RECEIVED***")
         else:
             msgstr = '{:3X} {:d}   '.format(cobid, dlc)
@@ -204,10 +205,11 @@ class sdoReadCAN(object):
 if __name__=='__main__':
     print('Writing example CAN Expedited read message ...')
     sdo = sdoReadCAN()
-    NodeId = 8
+    NodeId = 3  # SSO AAT 2dF Simulator Y-Axis
     #Example (1): get node Id
     VendorId = sdo.sdoRead(NodeId, 0x1000,0,1000)
-    print(f'VendorId: {VendorId:03X}')
+    if VendorId is not None:
+        print(f'VendorId: {VendorId:03X}')
     
     #Example (2): print Pspp parameters ( 4 PSPPs)
     N_PSPP =4
@@ -215,5 +217,6 @@ if __name__=='__main__':
         index = 0x2200+PSPP
         subindex = 1
         monVals = sdo.sdoRead(NodeId, index,subindex,3000)
-        vals = [(monVals >> i * 10) & (2**10 - 1) for i in range(3)]
-        print(f'PSPP: {PSPP} ,Temp1: {vals[0]} ,Temp2: {vals[1]} ,Voltage: {vals[2]}')
+        if monVals is not None:
+            vals = [(monVals >> i * 10) & (2**10 - 1) for i in range(3)]
+            print(f'PSPP: {PSPP} ,Temp1: {vals[0]} ,Temp2: {vals[1]} ,Voltage: {vals[2]}')
