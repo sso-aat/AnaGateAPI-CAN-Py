@@ -12,7 +12,7 @@ import ctypes as ct
 canMSG_ERROR_FRAME = 0x20
 
 class sdoReadCAN(object):
-    def __init__(self,ipAddress='10.88.16.71',channel=0,bitrate=125000):
+    def __init__(self,ipAddress='10.88.16.71',channel=0,bitrate=1000000):
         print("Intializing reading class")
         self.__cnt = Counter()
 
@@ -210,6 +210,9 @@ if __name__=='__main__':
     VendorId = sdo.sdoRead(NodeId, 0x1000,0,1000)
     if VendorId is not None:
         print(f'VendorId: {VendorId:03X}')
+    else:
+        print('no answer to get node id')
+        exit(1)
     
     #Example (2): print Pspp parameters ( 4 PSPPs)
     N_PSPP =4
@@ -220,3 +223,6 @@ if __name__=='__main__':
         if monVals is not None:
             vals = [(monVals >> i * 10) & (2**10 - 1) for i in range(3)]
             print(f'PSPP: {PSPP} ,Temp1: {vals[0]} ,Temp2: {vals[1]} ,Voltage: {vals[2]}')
+        else:
+            print('no answer to get pspp')
+            exit(1)
