@@ -203,26 +203,11 @@ class sdoReadCAN(object):
             msgstr += '    ' * (8 - len(msg))
 
 if __name__=='__main__':
-    print('Writing example CAN Expedited read message ...')
     sdo = sdoReadCAN()
     NodeId = 3  # SSO AAT 2dF Simulator Y-Axis
-    #Example (1): get node Id
-    VendorId = sdo.sdoRead(NodeId, 0x1000,0,1000)
-    if VendorId is not None:
-        print(f'VendorId: {VendorId:03X}')
-    else:
-        print('no answer to get node id')
-        exit(1)
-    
-    #Example (2): print Pspp parameters ( 4 PSPPs)
-    N_PSPP =4
-    for PSPP in range(0,N_PSPP): # Each i represents one PSPP
-        index = 0x2200+PSPP
-        subindex = 1
-        monVals = sdo.sdoRead(NodeId, index,subindex,3000)
-        if monVals is not None:
-            vals = [(monVals >> i * 10) & (2**10 - 1) for i in range(3)]
-            print(f'PSPP: {PSPP} ,Temp1: {vals[0]} ,Temp2: {vals[1]} ,Voltage: {vals[2]}')
-        else:
-            print('no answer to get pspp')
-            exit(1)
+
+    print('device type 0x%x' % sdo.sdoRead(NodeId, 0x1000, 0))
+    print('high voltage reference', sdo.sdoRead(NodeId, 0x2201, 0))
+    print('amplifier temperature', sdo.sdoRead(NodeId, 0x2202, 0))
+    print('system time', sdo.sdoRead(NodeId, 0x2141, 0))
+    #print('device name', sdo.sdoRead(NodeId, 0x1008, 0))
