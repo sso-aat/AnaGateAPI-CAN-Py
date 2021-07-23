@@ -57,15 +57,29 @@ class sdoReadCAN(object):
         This special class is used instead of the :class:`queue.Queue` class
         because it is iterable and fast."""
         return self.__canMsgQueue
-            
-        
-        
-    def sdoRead(self, nodeId, index, subindex, timeout=100,MAX_DATABYTES=8):
+
+    def writeMessage(self, cobid, msg, flag=0, timeout=None):
+        """Combining writing functions for different |CAN| interfaces
+
+        Parameters
+        ----------
+        cobid : :obj:`int`
+            |CAN| identifier
+        msg : :obj:`list` of :obj:`int` or :obj:`bytes`
+            Data bytes
+        flag : :obj:`int`, optional
+            Message flag (|RTR|, etc.). Defaults to zero.
+        timeout : :obj:`int`, optional
+            unused
+        """
+        self.__ch.write(cobid, msg, flag)
+
+    def sdoRead(self, nodeId, index, subindex, timeout=100, MAX_DATABYTES=8):
         """Read an object via |SDO|
-    
+
         Currently expedited and segmented transfer is supported by this method.
         The user has to decide how to decode the data.
-    
+
         Parameters
         ----------
         nodeId : :obj:`int`
@@ -76,7 +90,7 @@ class sdoReadCAN(object):
             |OD| Subindex. Defaults to zero for single value entries.
         timeout : :obj:`int`, optional
             |SDO| timeout in milliseconds
-    
+
         Returns
         -------
         :obj:`list` of :obj:`int`
@@ -84,9 +98,10 @@ class sdoReadCAN(object):
         :data:`None`
             In case of errors
         """
-        SDO_TX =0x580  
-        SDO_RX = 0x600  
+        SDO_TX = 0x580
+        SDO_RX = 0x600
         if nodeId is None or index is None or subindex is None:
+            print('SDO read protocol cancelled before it could begin.')
             return None
         self.cnt['SDO read total'] += 1
         cobid = SDO_RX + nodeId
@@ -95,11 +110,10 @@ class sdoReadCAN(object):
         msg[3] = subindex
         msg[0] = 0x40
         try:
-            self.__ch.write(cobid, msg)
+            self.writeMessage(cobid, msg, timeout=timeout)
         except:
             self.cnt['SDO read request timeout'] += 1
             return None
-        
         # Wait for response
         t0 = time.perf_counter()
         messageValid = False
@@ -119,20 +133,24 @@ class sdoReadCAN(object):
             if messageValid:
                 break
         else:
+            print(f'SDO read response timeout (node {nodeId}, index'
+                  f' {index:04X}:{subindex:02X})')
             self.cnt['SDO read response timeout'] += 1
             return None
         # Check command byte
         if ret[0] == 0x80:
             abort_code = int.from_bytes(ret[4:], 'little')
+            print(f'Received SDO abort message while reading '
+                  f'object {index:04X}:{subindex:02X} of node '
+                  f'{nodeId} with abort code {abort_code:08X}')
             self.cnt['SDO read abort'] += 1
             return None
         nDatabytes = 4 - ((ret[0] >> 2) & 0b11) if ret[0] != 0x42 else 4
         data = []
         for i in range(nDatabytes):
             data.append(ret[4 + i])
+        print(f'Got data: {data}')
         return int.from_bytes(data, 'little')
-    
-    
 
     def _anagateCbFunc(self):
         """Wraps the callback function for AnaGate |CAN| interfaces. This is
