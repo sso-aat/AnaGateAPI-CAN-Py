@@ -206,8 +206,23 @@ if __name__=='__main__':
     sdo = sdoReadCAN()
     NodeId = 3  # SSO AAT 2dF Simulator Y-Axis
 
-    print('device type 0x%x' % sdo.sdoRead(NodeId, 0x1000, 0))
-    print('high voltage reference', sdo.sdoRead(NodeId, 0x2201, 0))
-    print('amplifier temperature', sdo.sdoRead(NodeId, 0x2202, 0))
-    print('system time', sdo.sdoRead(NodeId, 0x2141, 0))
-    #print('device name', sdo.sdoRead(NodeId, 0x1008, 0))
+    print('device type: 0x%x' % sdo.sdoRead(NodeId, 0x1000, 0))
+    print('high voltage reference:', sdo.sdoRead(NodeId, 0x2201, 0))
+    print('amplifier temperature:', sdo.sdoRead(NodeId, 0x2202, 0))
+    print('system time:', sdo.sdoRead(NodeId, 0x2141, 0))
+    print('control word:', sdo.sdoRead(NodeId, 0x6040, 0))
+    print('status word:', sdo.sdoRead(NodeId, 0x6041, 0))
+    print('mode of operation:', sdo.sdoRead(NodeId, 0x6060, 0))
+    print('mode of operation display:', sdo.sdoRead(NodeId, 0x6061, 0))
+    print('desired state:', sdo.sdoRead(NodeId, 0x2300, 0))
+    msr = sdo.sdoRead(NodeId, 0x1002, 0)
+    print('manufacturer status register:', msr)
+    if msr & 0b100000000000:
+        print('    enable input not active (11)')
+    if msr & 0b10000000000000:
+        print('    trying to stop motor (13)')
+    if msr & 0b100000000000000:
+        print('    motor brake activated (14)')
+    if msr & 0b100000000000000:
+        print('    PWM outputs disabled (15)')
+    print('homing method:', sdo.sdoRead(NodeId, 0x6098, 0))
