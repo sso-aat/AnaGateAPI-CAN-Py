@@ -152,6 +152,90 @@ class sdoReadCAN(object):
         print(f'Got data: {data}')
         return int.from_bytes(data, 'little')
 
+    def sdoWrite(self, nodeId, index, subindex, value, timeout=3000):
+        """Write an object via |SDO| expedited write protocol
+
+        This sends the request and analyses the response.
+
+        Parameters
+        ----------
+        nodeId : :obj:`int`
+            The id from the node to read from
+        index : :obj:`int`
+            The |OD| index to read from
+        subindex : :obj:`int`
+            Subindex. Defaults to zero for single value entries
+        value : :obj:`int`
+            The value you want to write.
+        timeout : :obj:`int`, optional
+            |SDO| timeout in milliseconds
+
+        Returns
+        -------
+        :obj:`bool`
+            If writing the object was successful
+        """
+
+        # Create the request message
+        print(f'Send SDO write request to node {nodeId}, object '
+              f'{index:04X}:{subindex:X} with value {value:X}.')
+        SDO_TX = 0x580
+        SDO_RX = 0x600
+        self.cnt['SDO write total'] += 1
+        if value < self.__od[index][subindex].minimum or \
+                value > self.__od[index][subindex].maximum:
+            print(f'Value for SDO write protocol outside value range!')
+            self.cnt['SDO write value range'] += 1
+            return False
+        cobid = SDO_RX + nodeId
+        datasize = len(f'{value:X}') // 2 + 1
+        data = value.to_bytes(4, 'little')
+        msg = [0 for i in range(8)]
+        msg[0] = (((0b00010 << 2) | (4 - datasize)) << 2) | 0b11
+        msg[1], msg[2] = index.to_bytes(2, 'little')
+        msg[3] = subindex
+        msg[4:] = [data[i] for i in range(4)]
+        # Send the request message
+        try:
+            self.writeMessage(cobid, msg)
+        except:
+            self.cnt['SDO write request timeout'] += 1
+            return False
+
+        # Read the response from the bus
+        t0 = time.perf_counter()
+        messageValid = False
+        while time.perf_counter() - t0 < timeout / 1000:
+            with self.lock:
+                for i, (cobid_ret, ret, dlc, flag, t) in \
+                        zip(range(len(self.__canMsgQueue)),
+                            self.__canMsgQueue):
+                    messageValid = \
+                        (dlc == 8 and cobid_ret == SDO_TX + nodeId
+                         and ret[0] in [0x80, 0b1100000] and
+                         int.from_bytes([ret[1], ret[2]], 'little') == index
+                         and ret[3] == subindex)
+                    if messageValid:
+                        del self.__canMsgQueue[i]
+                        break
+            if messageValid:
+                break
+        else:
+            print('SDO write timeout')
+            self.cnt['SDO write timeout'] += 1
+            return False
+        # Analyse the response
+        if ret[0] == 0x80:
+            abort_code = int.from_bytes(ret[4:], 'little')
+            print(f'Received SDO abort message while writing '
+                  f'object {index:04X}:{subindex:02X} of node '
+                  f'{nodeId} with abort code {abort_code:08X}')
+            self.cnt['SDO write abort'] += 1
+            return False
+        else:
+            print('SDO write protocol successful!')
+        return True
+
     def _anagateCbFunc(self):
         """Wraps the callback function for AnaGate |CAN| interfaces. This is
         neccessary in order to have access to the instance attributes.
@@ -244,3 +328,6 @@ if __name__=='__main__':
     if msr & 0b100000000000000:
         print('    PWM outputs disabled (15)')
     print('homing method:', sdo.sdoRead(NodeId, 0x6098, 0))
+
+    # response = sdoWrite(NodeId,
+
