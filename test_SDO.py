@@ -151,7 +151,7 @@ class sdoReadCAN(object):
             data.append(ret[4 + i])
         return int.from_bytes(data, 'little')
 
-    def sdoWrite(self, nodeId, index, subindex, value, timeout=3000):
+    def sdoWrite(self, nodeId, index, subindex, value, timeout=3000, size=None):
         """Write an object via |SDO| expedited write protocol
 
         This sends the request and analyses the response.
@@ -182,14 +182,15 @@ class sdoReadCAN(object):
         SDO_RX = 0x600
         self.cnt['SDO write total'] += 1
         cobid = SDO_RX + nodeId
-        datasize = len(f'{value:X}') // 2 + 1
+        if size is None:
+            size = len(f'{value:X}') // 2 + 1
         data = value.to_bytes(4, 'little')
         msg = [0 for i in range(8)]
-        msg[0] = (((0b00010 << 2) | (4 - datasize)) << 2) | 0b11
+        msg[0] = (((0b00010 << 2) | (4 - size)) << 2) | 0b11
         msg[1], msg[2] = index.to_bytes(2, 'little')
         msg[3] = subindex
         msg[4:] = [data[i] for i in range(4)]
-        print(f"{cobid:04x}", ' '.join([f"{i:02x}" for i in msg]))
+        # print(f"{cobid:04x}", ' '.join([f"{i:02x}" for i in msg]))
         # Send the request message
         try:
             self.writeMessage(cobid, msg)
@@ -309,20 +310,81 @@ if __name__=='__main__':
     print('amplifier temperature:', sdo.sdoRead(NodeId, 0x2202, 0))
     print('system time:', sdo.sdoRead(NodeId, 0x2141, 0))
     print('control word:', sdo.sdoRead(NodeId, 0x6040, 0))
-    print('status word:', sdo.sdoRead(NodeId, 0x6041, 0))
+
+    def show_bits(bits, value):
+        for n in bits:
+            if value & (1 << n):
+                print('    ' + bits[n] + f' ({n})')
+
+    def show_status_word(n):
+        sw = sdo.sdoRead(n, 0x6041, 0)
+        print('status word:', sw)
+        bits = {
+            0: 'ready to switch on',
+            1: 'switched on',
+            2: 'operation enabled',
+            3: 'latched fault',
+            4: 'voltage enabled',
+            5: 'quick stop',
+            6: 'switch on disabled',
+            7: 'warning condition',
+            8: 'trajectory was aborted',
+            9: 'remote controlled',
+            10: 'target reached',
+            11: 'internal limit active',
+            12: 'bit 12 (homing attained)',
+            13: 'bit 13 (homing error)',
+            14: 'performing a move',
+            15: 'home position captured',
+        }
+        show_bits(bits, sw)
+
+    show_status_word(NodeId)
+
     print('mode of operation:', sdo.sdoRead(NodeId, 0x6060, 0))
     print('mode of operation display:', sdo.sdoRead(NodeId, 0x6061, 0))
     print('desired state:', sdo.sdoRead(NodeId, 0x2300, 0))
-    msr = sdo.sdoRead(NodeId, 0x1002, 0)
-    print('manufacturer status register:', msr)
-    if msr & 0b100000000000:
-        print('    enable input not active (11)')
-    if msr & 0b10000000000000:
-        print('    trying to stop motor (13)')
-    if msr & 0b100000000000000:
-        print('    motor brake activated (14)')
-    if msr & 0b100000000000000:
-        print('    PWM outputs disabled (15)')
+
+    def show_manufacturer_status_register(n):
+        msr = sdo.sdoRead(NodeId, 0x1002, 0)
+        print('manufacturer status register:', msr)
+        bits = {
+            0: 'short circuit detected',
+            1: 'amplifier over temperature',
+            2: 'over voltage',
+            3: 'under voltage',
+            4: 'motor temperature sensor active',
+            5: 'feedback error',
+            6: 'motor phasing error',
+            7: 'current output limited',
+            8: 'voltage output limited',
+            9: 'positive limit switch active',
+            10: 'negative limit switch active',
+            11: 'enable input not active',
+            12: 'amp is disabled by software',
+            13: 'trying to stop motor',
+            14: 'motor brake activated',
+            15: 'PWM outputs disabled',
+            16: 'positive software limit condition',
+            17: 'negative software limit condition',
+            18: 'tracking error',
+            19: 'tracking warning',
+            20: 'amplifier is currently in a reset condition',
+            21: 'position has wrapped',
+            22: 'amplifier fault',
+            23: 'velocity limit has been reached.',
+            24: 'acceleration limit has been reached.',
+            25: 'position error outside position tracking window',
+            26: 'home switch is active.',
+            27: 'in motion',
+            28: 'velocity error outside velocity window',
+            29: 'phase not yet initialized',
+            30: 'command fault',
+            }
+        show_bits(bits, msr)
+
+    show_manufacturer_status_register(NodeId)
+
     print('homing method:', sdo.sdoRead(NodeId, 0x6098, 0))
     print('latching fault status register:', sdo.sdoRead(NodeId, 0x2183, 0))
     print('network node id configuration: 0x%x' % sdo.sdoRead(NodeId, 0x21b0, 0))
@@ -343,28 +405,68 @@ if __name__=='__main__':
     #print('  write - : ', sdo.sdoWrite(NodeId, 0x6410, 7, 1600))
     #print('  read - : ', sdo.sdoRead(NodeId, 0x6410, 7))
 
-    print('attempt mode of operation change - homing mode')
+    print('attempt mode of operation change - homing mode', end=' ... ')
     response = sdo.sdoWrite(NodeId, 0x6060, 0, 6)
+    if response:
+        print('pass')
+    else:
+        print('fail')
     print('mode of operation:', sdo.sdoRead(NodeId, 0x6060, 0))
     print('mode of operation display:', sdo.sdoRead(NodeId, 0x6061, 0))
 
-    print('attempt desired state change - position loop driven by CANopen')
+    print('attempt desired state change - position loop driven by CANopen', end=' ... ')
     response = sdo.sdoWrite(NodeId, 0x2300, 0, 30)
+    if response:
+        print('pass')
+    else:
+        print('fail')
     print('desired state:', sdo.sdoRead(NodeId, 0x2300, 0))
 
     print('error register:', sdo.sdoRead(NodeId, 0x1001, 0))
 
     # p12
     # CANopen master transmits a control word to initialize all devices.
-    print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b1))
-    print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b11))
-    print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b111))
-    print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b1111))
-    # p23 receive pdos, 1 for control word, 2 for mode of op
+    #print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b1, size=2))
+    #print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b11, size=2))
+    #print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b111, size=2))
+    print('attempt write control word - on, voltage, operation', end=' ... ')
+    response = sdo.sdoWrite(NodeId, 0x6040, 0, 0b1111, size=2)
+    if response:
+        print('pass')
+    else:
+        print('fail')
+    show_status_word(NodeId)
+    # note: p23 receive pdos, 1 for control word, 2 for mode of op
 
     # Devices transmit messages indicating their status (in this example, all are operational).
     # CANopen master transmits a message instructing devices to perform homing operations.
+    # p160, initiating
+    print('attempt write control word - on, voltage, operation, homing', end=' ... ')
+    response = sdo.sdoWrite(NodeId, 0x6040, 0, 0b11111, size=2)
+    if response:
+        print('pass')
+    else:
+        print('fail')
+    show_status_word(NodeId)
+    time.sleep(1)
+    show_status_word(NodeId)
+    time.sleep(1)
+    show_status_word(NodeId)
+    time.sleep(1)
+    show_status_word(NodeId)
+    time.sleep(1)
+    show_status_word(NodeId)
+    time.sleep(1)
     # Devices indicate that homing is complete.
     # CANopen master transmits messages instructing devices to enter position profile mode (point-to-point motion mode) and issues first set of point-to-point move coordinates.
     # Devices execute their moves, using local position, velocity, and current loops, and then transmit actual position information back to the network.
     # CANopen master issues next set of position coordinates.
+
+    # shutdown
+    print('attempt write control word - shutdown', end=' ... ')
+    response = sdo.sdoWrite(NodeId, 0x6040, 0, 0, size=2)
+    if response:
+        print('pass')
+    else:
+        print('fail')
+    show_status_word(NodeId)
