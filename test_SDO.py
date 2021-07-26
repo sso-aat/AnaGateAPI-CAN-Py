@@ -149,7 +149,6 @@ class sdoReadCAN(object):
         data = []
         for i in range(nDatabytes):
             data.append(ret[4 + i])
-        print(f'Got data: {data}')
         return int.from_bytes(data, 'little')
 
     def sdoWrite(self, nodeId, index, subindex, value, timeout=3000):
@@ -177,16 +176,11 @@ class sdoReadCAN(object):
         """
 
         # Create the request message
-        print(f'Send SDO write request to node {nodeId}, object '
-              f'{index:04X}:{subindex:X} with value {value:X}.')
+        #print(f'Send SDO write request to node {nodeId}, object '
+        #      f'{index:04X}:{subindex:X} with value {value:X}.')
         SDO_TX = 0x580
         SDO_RX = 0x600
         self.cnt['SDO write total'] += 1
-        if value < self.__od[index][subindex].minimum or \
-                value > self.__od[index][subindex].maximum:
-            print(f'Value for SDO write protocol outside value range!')
-            self.cnt['SDO write value range'] += 1
-            return False
         cobid = SDO_RX + nodeId
         datasize = len(f'{value:X}') // 2 + 1
         data = value.to_bytes(4, 'little')
@@ -195,6 +189,7 @@ class sdoReadCAN(object):
         msg[1], msg[2] = index.to_bytes(2, 'little')
         msg[3] = subindex
         msg[4:] = [data[i] for i in range(4)]
+        print(f"{cobid:04x}", ' '.join([f"{i:02x}" for i in msg]))
         # Send the request message
         try:
             self.writeMessage(cobid, msg)
@@ -233,7 +228,8 @@ class sdoReadCAN(object):
             self.cnt['SDO write abort'] += 1
             return False
         else:
-            print('SDO write protocol successful!')
+            pass
+            # print('SDO write protocol successful!')
         return True
 
     def _anagateCbFunc(self):
@@ -328,6 +324,47 @@ if __name__=='__main__':
     if msr & 0b100000000000000:
         print('    PWM outputs disabled (15)')
     print('homing method:', sdo.sdoRead(NodeId, 0x6098, 0))
+    print('latching fault status register:', sdo.sdoRead(NodeId, 0x2183, 0))
+    print('network node id configuration: 0x%x' % sdo.sdoRead(NodeId, 0x21b0, 0))
+    print('current state of the can id selection switch: 0x%x' % sdo.sdoRead(NodeId, 0x2197, 0))
+    print('raw input pin state: 0x%x' % sdo.sdoRead(NodeId, 0x2196, 0))
+    di = sdo.sdoRead(NodeId, 0x60fd, 0)
+    if di & 0b1:
+        print('digital inputs - negative limit switch active (0)')
+    if di & 0b10:
+        print('digital inputs - positive limit switch active (1)')
+    if di & 0b100:
+        print('digital inputs - home switch active (2)')
+    if not (di & 0b1000):
+        print('digital inputs - amplifier enable input INACTIVE (3)')
+    print('motor resistance:', sdo.sdoRead(NodeId, 0x6410, 7))
+    #print('  write - : ', sdo.sdoWrite(NodeId, 0x6410, 7, 1601))
+    #print('  read - : ', sdo.sdoRead(NodeId, 0x6410, 7))
+    #print('  write - : ', sdo.sdoWrite(NodeId, 0x6410, 7, 1600))
+    #print('  read - : ', sdo.sdoRead(NodeId, 0x6410, 7))
 
-    # response = sdoWrite(NodeId,
+    print('attempt mode of operation change - homing mode')
+    response = sdo.sdoWrite(NodeId, 0x6060, 0, 6)
+    print('mode of operation:', sdo.sdoRead(NodeId, 0x6060, 0))
+    print('mode of operation display:', sdo.sdoRead(NodeId, 0x6061, 0))
 
+    print('attempt desired state change - position loop driven by CANopen')
+    response = sdo.sdoWrite(NodeId, 0x2300, 0, 30)
+    print('desired state:', sdo.sdoRead(NodeId, 0x2300, 0))
+
+    print('error register:', sdo.sdoRead(NodeId, 0x1001, 0))
+
+    # p12
+    # CANopen master transmits a control word to initialize all devices.
+    print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b1))
+    print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b11))
+    print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b111))
+    print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b1111))
+    # p23 receive pdos, 1 for control word, 2 for mode of op
+
+    # Devices transmit messages indicating their status (in this example, all are operational).
+    # CANopen master transmits a message instructing devices to perform homing operations.
+    # Devices indicate that homing is complete.
+    # CANopen master transmits messages instructing devices to enter position profile mode (point-to-point motion mode) and issues first set of point-to-point move coordinates.
+    # Devices execute their moves, using local position, velocity, and current loops, and then transmit actual position information back to the network.
+    # CANopen master issues next set of position coordinates.
