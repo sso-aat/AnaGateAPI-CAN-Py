@@ -405,6 +405,7 @@ if __name__=='__main__':
     #print('  write - : ', sdo.sdoWrite(NodeId, 0x6410, 7, 1600))
     #print('  read - : ', sdo.sdoRead(NodeId, 0x6410, 7))
 
+    time.sleep(3)
     print('attempt mode of operation change - homing mode', end=' ... ')
     response = sdo.sdoWrite(NodeId, 0x6060, 0, 6)
     if response:
@@ -414,21 +415,24 @@ if __name__=='__main__':
     print('mode of operation:', sdo.sdoRead(NodeId, 0x6060, 0))
     print('mode of operation display:', sdo.sdoRead(NodeId, 0x6061, 0))
 
-    print('attempt desired state change - position loop driven by CANopen', end=' ... ')
-    response = sdo.sdoWrite(NodeId, 0x2300, 0, 30)
-    if response:
-        print('pass')
-    else:
-        print('fail')
-    print('desired state:', sdo.sdoRead(NodeId, 0x2300, 0))
+    
+    #time.sleep(3)
+    #print('attempt desired state change - position loop driven by CANopen', end=' ... ')
+    #response = sdo.sdoWrite(NodeId, 0x2300, 0, 30)
+    #if response:
+    #    print('pass')
+    #else:
+    #    print('fail')
+    #print('desired state:', sdo.sdoRead(NodeId, 0x2300, 0))
 
-    print('error register:', sdo.sdoRead(NodeId, 0x1001, 0))
+    #print('error register:', sdo.sdoRead(NodeId, 0x1001, 0))
 
     # p12
     # CANopen master transmits a control word to initialize all devices.
     #print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b1, size=2))
     #print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b11, size=2))
     #print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b111, size=2))
+    time.sleep(3)
     print('attempt write control word - on, voltage, operation', end=' ... ')
     response = sdo.sdoWrite(NodeId, 0x6040, 0, 0b1111, size=2)
     if response:
@@ -441,6 +445,7 @@ if __name__=='__main__':
     # Devices transmit messages indicating their status (in this example, all are operational).
     # CANopen master transmits a message instructing devices to perform homing operations.
     # p160, initiating
+    time.sleep(3)
     print('attempt write control word - on, voltage, operation, homing', end=' ... ')
     response = sdo.sdoWrite(NodeId, 0x6040, 0, 0b11111, size=2)
     if response:
