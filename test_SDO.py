@@ -13,7 +13,6 @@ canMSG_ERROR_FRAME = 0x20
 
 class sdoReadCAN(object):
     def __init__(self,ipAddress='10.88.16.71',channel=0,bitrate=1000000):
-        print("Intializing reading class")
         self.__cnt = Counter()
 
         self.__ch = analib.Channel(ipAddress, channel, baudrate=bitrate)
