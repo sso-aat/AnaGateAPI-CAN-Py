@@ -2,6 +2,7 @@
 """
 Created on Sep 23 14:29:35 2019
 @author: Ahmed Qamesh
+@author: James Cameron <james.cameron@anu.edu.au> (SSO AAT test harness)
 """
 import analib
 import time
@@ -302,8 +303,9 @@ class sdoReadCAN(object):
 
 if __name__=='__main__':
     sdo = sdoReadCAN()
-    NodeId = 3  # SSO AAT 2dF Simulator Y-Axis
+    NodeId = 3  # SSO AAT 2dF Simulator Y-Axis via CANopen
 
+    # read and display several objects
     print('device type: 0x%x' % sdo.sdoRead(NodeId, 0x1000, 0))
     print('high voltage reference:', sdo.sdoRead(NodeId, 0x2201, 0))
     print('amplifier temperature:', sdo.sdoRead(NodeId, 0x2202, 0))
@@ -311,13 +313,18 @@ if __name__=='__main__':
     print('control word:', sdo.sdoRead(NodeId, 0x6040, 0))
 
     def show_bits(bits, value):
+        """ iterate through a dictionary of bit numbers and show if
+        they are set """
         for n in bits:
             if value & (1 << n):
                 print('    ' + bits[n] + f' ({n})')
 
     def show_status_word(n):
+        """ show the status word object and decode the bits """
         sw = sdo.sdoRead(n, 0x6041, 0)
         print('status word:', sw)
+        # dictionary of bit numbers was adapted from the Copley
+        # CANopen Programmers' Manual
         bits = {
             0: 'ready to switch on',
             1: 'switched on',
@@ -345,8 +352,12 @@ if __name__=='__main__':
     print('desired state:', sdo.sdoRead(NodeId, 0x2300, 0))
 
     def show_manufacturer_status_register(n):
+        """ show the manufacturer status register object and decode
+        the bits """
         msr = sdo.sdoRead(NodeId, 0x1002, 0)
         print('manufacturer status register:', msr)
+        # dictionary of bit numbers was adapted from the Copley
+        # CANopen Programmers' Manual
         bits = {
             0: 'short circuit detected',
             1: 'amplifier over temperature',
@@ -399,12 +410,13 @@ if __name__=='__main__':
     if not (di & 0b1000):
         print('digital inputs - amplifier enable input INACTIVE (3)')
     print('motor resistance:', sdo.sdoRead(NodeId, 0x6410, 7))
-    #print('  write - : ', sdo.sdoWrite(NodeId, 0x6410, 7, 1601))
-    #print('  read - : ', sdo.sdoRead(NodeId, 0x6410, 7))
-    #print('  write - : ', sdo.sdoWrite(NodeId, 0x6410, 7, 1600))
-    #print('  read - : ', sdo.sdoRead(NodeId, 0x6410, 7))
 
+    # a temporary delay to help find which step causes the axis to be
+    # disabled.
     time.sleep(3)
+
+    # set homing mode and check that the amplifier mode of operation
+    # has actually changed.
     print('attempt mode of operation change - homing mode', end=' ... ')
     response = sdo.sdoWrite(NodeId, 0x6060, 0, 6)
     if response:
@@ -414,8 +426,14 @@ if __name__=='__main__':
     print('mode of operation:', sdo.sdoRead(NodeId, 0x6060, 0))
     print('mode of operation display:', sdo.sdoRead(NodeId, 0x6061, 0))
 
-    
+    # following section temporarily disabled by commenting it out,
+    # because this is the command that causes the axis to be disabled,
+    # and we don't know why yet,
+
+    # a temporary delay to help find which step causes the axis to be
+    # disabled.
     #time.sleep(3)
+
     #print('attempt desired state change - position loop driven by CANopen', end=' ... ')
     #response = sdo.sdoWrite(NodeId, 0x2300, 0, 30)
     #if response:
@@ -426,12 +444,14 @@ if __name__=='__main__':
 
     #print('error register:', sdo.sdoRead(NodeId, 0x1001, 0))
 
-    # p12
+
+    # from page 12
     # CANopen master transmits a control word to initialize all devices.
-    #print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b1, size=2))
-    #print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b11, size=2))
-    #print('write control word:', sdo.sdoWrite(NodeId, 0x6040, 0, 0b111, size=2))
+
+    # a temporary delay to help find which step causes the axis to be
+    # disabled.
     time.sleep(3)
+
     print('attempt write control word - on, voltage, operation', end=' ... ')
     response = sdo.sdoWrite(NodeId, 0x6040, 0, 0b1111, size=2)
     if response:
@@ -439,11 +459,15 @@ if __name__=='__main__':
     else:
         print('fail')
     show_status_word(NodeId)
-    # note: p23 receive pdos, 1 for control word, 2 for mode of op
 
+    # note: we see on page 23 that receive PDOs are available instead
+    # of using SDOs, 1 for control word, 2 for mode of operation, but
+    # for the moment we use SDOs,
+
+    # from page 12
     # Devices transmit messages indicating their status (in this example, all are operational).
     # CANopen master transmits a message instructing devices to perform homing operations.
-    # p160, initiating
+    # see also page 160, initiating
     time.sleep(3)
     print('attempt write control word - on, voltage, operation, homing', end=' ... ')
     response = sdo.sdoWrite(NodeId, 0x6040, 0, 0b11111, size=2)
@@ -453,18 +477,26 @@ if __name__=='__main__':
         print('fail')
     show_status_word(NodeId)
     time.sleep(1)
-    show_status_word(NodeId)
-    time.sleep(1)
-    show_status_word(NodeId)
-    time.sleep(1)
-    show_status_word(NodeId)
-    time.sleep(1)
-    show_status_word(NodeId)
-    time.sleep(1)
+
+    # from page 12
     # Devices indicate that homing is complete.
-    # CANopen master transmits messages instructing devices to enter position profile mode (point-to-point motion mode) and issues first set of point-to-point move coordinates.
-    # Devices execute their moves, using local position, velocity, and current loops, and then transmit actual position information back to the network.
+    # (not yet implemented)
+
+    # from page 12
+    # CANopen master transmits messages instructing devices to enter
+    # position profile mode (point-to-point motion mode) and issues
+    # first set of point-to-point move coordinates.
+    # (not yet implemented)
+
+    # from page 12
+    # Devices execute their moves, using local position, velocity, and
+    # current loops, and then transmit actual position information
+    # back to the network.
+    # (not yet implemented)
+
+    # from page 12
     # CANopen master issues next set of position coordinates.
+    # (not yet implemented)
 
     # shutdown
     print('attempt write control word - shutdown', end=' ... ')
