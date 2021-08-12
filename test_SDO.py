@@ -19,7 +19,7 @@ class sdoReadCAN(object):
         self.__ch = analib.Channel(ipAddress, channel, baudrate=bitrate)
         self.__cbFunc = analib.wrapper.dll.CBFUNC(self._anagateCbFunc())
         self.__ch.setCallback(self.__cbFunc)
-        
+
         # Initialize default arguments
         self.__canMsgQueue = deque([], 10)
         self.__lock = Lock()
@@ -29,20 +29,20 @@ class sdoReadCAN(object):
         """Currently used |CAN| channel. The actual class depends on the used
         |CAN| interface."""
         return self.__ch
-            
+
     @property
     def lock(self):
         """:class:`~threading.Lock` : Lock object for accessing the incoming
         message queue :attr:`canMsgQueue`"""
         return self.__lock
-    
+
     @property
     def cnt(self):
         """:class:`~collections.Counter` : Counter holding information about
         quality of transmitting and receiving. Its contens are logged when the
         program ends."""
         return self.__cnt
-    
+
     @property
     def canMsgQueue(self):
         """:class:`collections.deque` : Queue object holding incoming |CAN|
@@ -276,10 +276,10 @@ class sdoReadCAN(object):
             self.dumpMessage(cobid, data, dlc, flag)
 
         return cbFunc
-    
+
     def dumpMessage(self,cobid, msg, dlc, flag):
         """Dumps a CANopen message to the screen and log file
-    
+
         Parameters
         ----------
         cobid : :obj:`int`
@@ -292,7 +292,7 @@ class sdoReadCAN(object):
             Flags, a combination of the :const:`canMSG_xxx` and
             :const:`canMSGERR_xxx` values
         """
-    
+
         if (flag & canMSG_ERROR_FRAME != 0):
             print("***ERROR FRAME RECEIVED***")
         else:
