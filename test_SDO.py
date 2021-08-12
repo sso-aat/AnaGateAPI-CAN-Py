@@ -12,8 +12,9 @@ import ctypes as ct
 
 canMSG_ERROR_FRAME = 0x20
 
+
 class sdoReadCAN(object):
-    def __init__(self,ipAddress='10.88.16.71',channel=0,bitrate=1000000):
+    def __init__(self, ipAddress='10.88.16.71', channel=0, bitrate=1000000):
         self.__cnt = Counter()
 
         self.__ch = analib.Channel(ipAddress, channel, baudrate=bitrate)
@@ -151,7 +152,8 @@ class sdoReadCAN(object):
             data.append(ret[4 + i])
         return int.from_bytes(data, 'little')
 
-    def sdoWrite(self, nodeId, index, subindex, value, timeout=3000, size=None):
+    def sdoWrite(self, nodeId, index, subindex, value,
+                 timeout=3000, size=None):
         """Write an object via |SDO| expedited write protocol
 
         This sends the request and analyses the response.
@@ -176,8 +178,8 @@ class sdoReadCAN(object):
         """
 
         # Create the request message
-        #print(f'Send SDO write request to node {nodeId}, object '
-        #      f'{index:04X}:{subindex:X} with value {value:X}.')
+        # print(f'Send SDO write request to node {nodeId}, object '
+        #       f'{index:04X}:{subindex:X} with value {value:X}.')
         SDO_TX = 0x580
         SDO_RX = 0x600
         self.cnt['SDO write total'] += 1
@@ -277,7 +279,7 @@ class sdoReadCAN(object):
 
         return cbFunc
 
-    def dumpMessage(self,cobid, msg, dlc, flag):
+    def dumpMessage(self, cobid, msg, dlc, flag):
         """Dumps a CANopen message to the screen and log file
 
         Parameters
@@ -301,7 +303,8 @@ class sdoReadCAN(object):
                 msgstr += '{:02x}  '.format(msg[i])
             msgstr += '    ' * (8 - len(msg))
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     sdo = sdoReadCAN()
     NodeId = 3  # SSO AAT 2dF Simulator Y-Axis via CANopen
 
@@ -397,8 +400,10 @@ if __name__=='__main__':
 
     print('homing method:', sdo.sdoRead(NodeId, 0x6098, 0))
     print('latching fault status register:', sdo.sdoRead(NodeId, 0x2183, 0))
-    print('network node id configuration: 0x%x' % sdo.sdoRead(NodeId, 0x21b0, 0))
-    print('current state of the can id selection switch: 0x%x' % sdo.sdoRead(NodeId, 0x2197, 0))
+    print('network node id configuration: 0x%x' %
+          sdo.sdoRead(NodeId, 0x21b0, 0))
+    print('current state of the can id selection switch: 0x%x' %
+          sdo.sdoRead(NodeId, 0x2197, 0))
     print('raw input pin state: 0x%x' % sdo.sdoRead(NodeId, 0x2196, 0))
     di = sdo.sdoRead(NodeId, 0x60fd, 0)
     if di & 0b1:
@@ -432,18 +437,19 @@ if __name__=='__main__':
 
     # a temporary delay to help find which step causes the axis to be
     # disabled.
-    #time.sleep(3)
+    # time.sleep(3)
 
-    #print('attempt desired state change - position loop driven by CANopen', end=' ... ')
-    #response = sdo.sdoWrite(NodeId, 0x2300, 0, 30)
-    #if response:
-    #    print('pass')
-    #else:
-    #    print('fail')
-    #print('desired state:', sdo.sdoRead(NodeId, 0x2300, 0))
+    # print(
+    # 'attempt desired state change - position loop driven by CANopen',
+    # end=' ... ')
+    # response = sdo.sdoWrite(NodeId, 0x2300, 0, 30)
+    # if response:
+    #     print('pass')
+    # else:
+    #     print('fail')
+    # print('desired state:', sdo.sdoRead(NodeId, 0x2300, 0))
 
-    #print('error register:', sdo.sdoRead(NodeId, 0x1001, 0))
-
+    # print('error register:', sdo.sdoRead(NodeId, 0x1001, 0))
 
     # from page 12
     # CANopen master transmits a control word to initialize all devices.
@@ -465,11 +471,14 @@ if __name__=='__main__':
     # for the moment we use SDOs,
 
     # from page 12
-    # Devices transmit messages indicating their status (in this example, all are operational).
-    # CANopen master transmits a message instructing devices to perform homing operations.
+    # Devices transmit messages indicating their status (in this
+    # example, all are operational).
+    # CANopen master transmits a message instructing devices to
+    # perform homing operations.
     # see also page 160, initiating
     time.sleep(3)
-    print('attempt write control word - on, voltage, operation, homing', end=' ... ')
+    print('attempt write control word - on, voltage, operation, homing',
+          end=' ... ')
     response = sdo.sdoWrite(NodeId, 0x6040, 0, 0b11111, size=2)
     if response:
         print('pass')
