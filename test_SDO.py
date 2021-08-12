@@ -486,6 +486,7 @@ if __name__ == '__main__':
         print('fail')
     show_status_word(NodeId)
     time.sleep(1)
+    print('control word:', sdo.sdoRead(NodeId, 0x6040, 0))
 
     # from page 12
     # Devices indicate that homing is complete.
